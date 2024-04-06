@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <arg name="yolo_model" default="v3_best.pt"/>
+    <!-- <arg name="topic_name_cam" default="/right_cam_node/image_raw"/> -->
+    <arg name="topic_name_cam" default="/camera/image_raw"/>
+    <arg name="topic_name_result" default="/escooter/result"/>
+    <arg name="result_image_topic" default="/escooter/image"/>
+    <arg name="debug" default="true"/>
+    <!-- <arg name="conf_thres" default="0.25"/> -->
+    <!-- <arg name="iou_thres" default="0.45"/> -->
+    <!-- <arg name="max_det" default="300"/> -->
+    <!-- <arg name="classes" default=""/> -->
+    <!-- <arg name="tracker" default="bytetrack.yaml"/> -->
+    <!-- <arg name="device" default=""/> -->
+    <!-- <arg name="result_conf" default="true"/> -->
+    <!-- <arg name="result_line_width" default="1"/> -->
+    <!-- <arg name="result_font_size" default="1"/> -->
+    <!-- <arg name="result_font" default="Arial.ttf"/> -->
+    <!-- <arg name="result_labels" default="true"/> -->
+    <!-- <arg name="result_boxes" default="true"/> -->
+
+    <!-- Launch the listener node -->
+    <node name="listener_node" pkg="escooter_ros" type="escooter.py" output="screen">
+        <param name="yolo_model" value="$(arg yolo_model)"/>
+        <param name="topic_name_cam" value="$(arg topic_name_cam)"/>
+        <param name="topic_name_result" value="$(arg topic_name_result)"/>
+        <param name="result_image_topic" value="$(arg result_image_topic)"/>
+        <param name="debug" value="$(arg debug)"/>
+    </node>
+
+    <!-- <node if="$(arg debug)==rviz" pkg="rviz" type="rviz" name="rviz" args="-d $(find escooter_ros)/rviz/escooter.rviz"/> -->
+
+</launch>
