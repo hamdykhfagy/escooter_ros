@@ -15,7 +15,7 @@
         <param name="result_image_topic" value="$(arg result_image_topic)"/>
         <param name="debug" value="$(arg debug)"/>
     </node>
-
+    <!-- new comment -->
     <!-- <node if="$(arg debug)==rviz" pkg="rviz" type="rviz" name="rviz" args="-d $(find escooter_ros)/rviz/escooter.rviz"/> -->
 
 </launch>
