@@ -1,4 +1,4 @@
-# escooter_roos
+# escooter_ros
 
 In a new terminal `roslaunch escooter_ros escooter.launch`
 
