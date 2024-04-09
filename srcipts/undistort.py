@@ -2,11 +2,22 @@ import numpy as np
 import cv2
 
 def undistort_image(image, intrinsic_matrix, radial_dist_coeffs):
+    # Your intrinsic parameter matrix
+    # Intrinsic parameter matrix (camera matrix)
+    intrinsic_matrix = np.array([[1262.387025, 0.000000, 1024.000000],
+                                    [0.000000, 1262.387025, 1232.000000],
+                                    [0.000000, 0.000000, 1.000000]])
+
+    # Your radial distortion coefficients
+    # radial_dist_coeffs = np.array([k1, k2, p1, p2, k3])
+    # Distortion coefficients
+    dist_coeffs_camera = np.array([-0.242265, 0.042270, -0.002106, -0.001473, 0.000000])
+
     h, w = image.shape[:2]
-    new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(intrinsic_matrix, radial_dist_coeffs, (w, h), 1, (w, h))
+    new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(intrinsic_matrix, dist_coeffs_camera, (w, h), 1, (w, h))
 
     # Undistort the image
-    undistorted_image = cv2.undistort(image, intrinsic_matrix, radial_dist_coeffs, None, new_camera_matrix)
+    undistorted_image = cv2.undistort(image, intrinsic_matrix, dist_coeffs_camera, None, new_camera_matrix)
 
     return undistorted_image
 
