@@ -156,7 +156,7 @@ def Euler_callback(data): # Winkel des Fahrzeugs Richtung Norden zwischenspeiche
     global angle
     angle = data.angle.z # data angles are in rad
 
-def get_angle(x, width, camera): # Übernommen aus der Masterarbeit YanLing, mit Abwandelungen von Maximilian Weltz
+def get_angle(x, width, camera): # Übernommen aus einer früheren Masterarbeit, mit Abwandelungen
     IMAGE_WIDTH = 2047
     HFOV = 101.662896
     middlePixelPosition = width*0.5 + x
@@ -181,8 +181,8 @@ def get_angle(x, width, camera): # Übernommen aus der Masterarbeit YanLing, mit
         angle = offset_b - ((1023.5 - middlePixelPosition) * HFOV) / IMAGE_WIDTH
     return ((angle+11.9)%360) # should correct missalignment of camera #11.9
 
-def get_distance(pixel_hight, object_hight): # Übernommen aus der Masterarbeit  YanLing, mit Abwandelungen von Maximilian Weltz
-    # aus Arbeit von Yanling
+def get_distance(pixel_hight, object_hight): # Übernommen aus einer früheren Masterarbeit, mit Abwandelungen
+    # aus einer früheren Masterarbeit
     #define HFOV 101.662896
     VFOV = 111.383104
     #define IMAGE_WIDTH 2047

@@ -71,10 +71,10 @@ class EscooterNode():
         self.yolo_model = rospy.get_param("~yolo_model", "best_June.pt")
         self.cam2_logic = rospy.get_param("~cam2_logic", "or")
         self.camera = rospy.get_param("~CAMERA", 2)
-        self.min_width = rospy.get_param("~min_width", 30)
-        self.max_width = rospy.get_param("~max_width", 30)
-        self.min_height = rospy.get_param("~min_height", 30)
-        self.max_height = rospy.get_param("~max_height", 30)
+        self.min_width = rospy.get_param("~min_width", 10)
+        self.max_width = rospy.get_param("~max_width", 10000)
+        self.min_height = rospy.get_param("~min_height", 10)
+        self.max_height = rospy.get_param("~max_height", 10000)
         self.log_results = rospy.get_param("~log_results", False)
 
     def image_pc_callback(self, msg1, point_cloud_msg):
@@ -104,6 +104,8 @@ class EscooterNode():
 
     def has_detections(self, results):
         # Assuming results is a list containing results for cv_image1 and cv_image2
+        if results is None or len(results) < 2:
+            return False
         if results[0] is not None and results[1] is not None:
             # Check if both images have detections
             if len(results[0].boxes) == len(results[1].boxes):
@@ -214,7 +216,7 @@ class EscooterNode():
         if int(bbox[2]) > self.max_width or int(bbox[2]) < self.min_width:
             rospy.loginfo(f"width  = {int(bbox[2])}, height = {int(bbox[3])}")
             return False
-        if int(bbox[3]) > self.max_width or int(bbox[3]) < self.min_width:
+        if int(bbox[3]) > self.max_height or int(bbox[3]) < self.min_height:
             rospy.loginfo(f"width  = {int(bbox[2])}, height = {int(bbox[3])}")
             return False
         

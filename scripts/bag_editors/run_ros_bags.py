@@ -4,7 +4,7 @@ import rosbag
 from cv_bridge import CvBridge
 import numpy as np
 import cv2
-import escooter_ros.srcipts.tutorials.undistort as undistort
+import escooter_ros.scripts.tutorials.undistort as undistort
 
 def process_bagfiles(bags_path, result_path):
     # IMAGE_WIDTH = 2047

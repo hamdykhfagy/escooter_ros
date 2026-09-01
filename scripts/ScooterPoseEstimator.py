@@ -4,6 +4,9 @@ from tf.transformations import quaternion_from_euler
 from sensor_msgs.msg import NavSatFix
 from geodesy import utm
 import csv
+import os
+import rospy
+import roslib.packages
 
 global altitude
 global lat
@@ -14,6 +17,18 @@ global angle
 class ScooterPoseEstimator:
     def __init__(self, HFOV, VFOV, IMAGE_WIDTH, IMAGE_HEIGHT):
         self.set_camera_parameters(HFOV, VFOV, IMAGE_WIDTH, IMAGE_HEIGHT)
+        self.log_csv_path = self.resolve_log_csv_path()
+
+    def resolve_log_csv_path(self):
+        default_path = os.path.join(roslib.packages.get_pkg_dir("escooter_ros"), "data", "scooter_positions.csv")
+        path = rospy.get_param("~log_csv_path", default_path)
+        if not path:
+            rospy.loginfo("~log_csv_path is empty, position logging is disabled")
+            return None
+        directory = os.path.dirname(path)
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory)
+        return path
 
     def set_camera_parameters(self, HFOV, VFOV, IMAGE_WIDTH, IMAGE_HEIGHT):
         self.HFOV = HFOV
@@ -76,9 +91,10 @@ class ScooterPoseEstimator:
         Nachricht.longitude = Object_location.longitude
         Nachricht.altitude = Object_location.altitude
         # Log bin position for evaluation
-        with open('/home/hamdy/catkin_ws/data/scooter_positions.csv', 'a', newline='') as csv_file:
-            data_writer = csv.writer(csv_file)
-            data_writer.writerow([class_name, Nachricht.latitude, Nachricht.longitude,Nachricht.altitude])
+        if self.log_csv_path is not None:
+            with open(self.log_csv_path, 'a', newline='') as csv_file:
+                data_writer = csv.writer(csv_file)
+                data_writer.writerow([class_name, Nachricht.latitude, Nachricht.longitude,Nachricht.altitude])
         return Nachricht
         
     def pose_from_ratio(self, w, h):
@@ -106,7 +122,7 @@ class ScooterPoseEstimator:
         global angle
         angle = data.angle.z # data angles are in rad
 
-    def get_angle(self, x, width, camera): # Übernommen aus der Masterarbeit YanLing, mit Abwandelungen von Maximilian Weltz
+    def get_angle(self, x, width, camera): # Übernommen aus einer früheren Masterarbeit, mit Abwandelungen
         # IMAGE_WIDTH = 2047
         # HFOV = 101.662896
         middlePixelPosition = width*0.5 + x

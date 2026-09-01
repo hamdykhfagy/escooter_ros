@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import cv2
 import numpy as np
-from escooter_ros.srcipts.tutorials.keypoints import get_matched_keypoints_inside_bbox, filter_matches_outside_bbox, visualize_matches
+from escooter_ros.scripts.tutorials.keypoints import get_matched_keypoints_inside_bbox, filter_matches_outside_bbox, visualize_matches
 
 
 def calculate_distance(img_left, img_right, bbox_left, bbox_right, focal_length, baseline):
